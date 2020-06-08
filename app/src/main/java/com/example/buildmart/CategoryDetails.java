@@ -1,0 +1,41 @@
+package com.example.buildmart;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+
+public class CategoryDetails extends AppCompatActivity {
+
+    private RecyclerView materialList;
+    private CategoryMaterialListAdapter categoryMaterialListAdapter;
+    private Toolbar toolbar;
+    private FireStoreHandler fireStoreHandler;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_category_details);
+
+        fireStoreHandler = new FireStoreHandler(this);
+
+        materialList = findViewById(R.id.materialList);
+        toolbar = findViewById(R.id.categoryToolbar);
+        setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        String category  = intent.getStringExtra("category");
+        fireStoreHandler.getCategoryMaterials(category, materialList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeScreen"
+        android:title="home"
+        android:icon="@drawable/ic_home_black_24dp"
+        />
+
+    <item
+        android:id="@+id/servicesScreen"
+        android:title="services"
+        android:icon="@drawable/ic_room_service_black_24dp"
+        />
+
+    <item
+        android:id="@+id/searchScreen"
+        android:title="search"
+        android:icon="@drawable/ic_search_black_24dp"
+        />
+
+    <item
+        android:id="@+id/rateCalculatorScreen"
+        android:title="rate calculator"
+        android:icon="@drawable/ic_monetization_on_black_24dp"
+        />
+</menu>
