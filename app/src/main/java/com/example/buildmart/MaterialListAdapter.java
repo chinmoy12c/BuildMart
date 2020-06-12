@@ -16,14 +16,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-import java.util.Map;
-
-public class CategoryMaterialListAdapter extends RecyclerView.Adapter<CategoryMaterialListAdapter.MyViewHolder> {
+public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapter.MyViewHolder> {
 
     private Context context;
     private QuerySnapshot materials;
 
-    CategoryMaterialListAdapter(Context context, QuerySnapshot queryDocumentSnapshots){
+    MaterialListAdapter(Context context, QuerySnapshot queryDocumentSnapshots){
         this.context = context;
         this.materials = queryDocumentSnapshots;
     }

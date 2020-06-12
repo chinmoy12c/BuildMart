@@ -93,7 +93,7 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
                 startActivity(materialListIntent);
                 break;
             case R.id.electricWork:
-                materialListIntent.putExtra("category","electric");
+                materialListIntent.putExtra("category","electrical");
                 startActivity(materialListIntent);
                 break;
             case R.id.tilesWork:

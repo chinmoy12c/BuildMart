@@ -27,8 +27,9 @@
             android:layout_below="@+id/itemImage"
             android:layout_marginStart="10dp"
             android:text="Ambuja cement"
+            android:fontFamily="@font/saira_medium"
             android:textAlignment="center"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/priceTagRecommended"

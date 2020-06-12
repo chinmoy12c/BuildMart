@@ -22,6 +22,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:text="Ambuja cement"
+
             android:fontFamily="@font/saira_bold"
             android:textSize="16sp"/>
 

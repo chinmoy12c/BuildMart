@@ -7,16 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +34,7 @@ public class FireStoreHandler {
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                CategoryMaterialListAdapter categoryMaterialListAdapter = new CategoryMaterialListAdapter(context, queryDocumentSnapshots);
+                MaterialListAdapter categoryMaterialListAdapter = new MaterialListAdapter(context, queryDocumentSnapshots);
                 materialList.setAdapter(categoryMaterialListAdapter);
                 materialList.setLayoutManager(new LinearLayoutManager(context));
             }
@@ -159,5 +155,27 @@ public class FireStoreHandler {
     private void showError(Exception e){
         Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
         e.printStackTrace();
+    }
+
+    public void searchItem(final RecyclerView searchListRecycler, String searchText) {
+        db.collection("materials")
+                .orderBy("name")
+                .startAt(searchText)
+                .endAt(searchText+"\uf8ff")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        MaterialListAdapter searchListAdapter = new MaterialListAdapter(context, queryDocumentSnapshots);
+                        searchListRecycler.setAdapter(searchListAdapter);
+                        searchListRecycler.setLayoutManager(new LinearLayoutManager(context));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
     }
 }
