@@ -7,12 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +45,7 @@ public class FireStoreHandler {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
+                showError(e);
             }
         });
     }
@@ -58,13 +62,13 @@ public class FireStoreHandler {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
+                showError(e);
             }
         });
     }
 
     public void getCart(final RecyclerView cartRecycler) {
-        db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", "chinmoy12c@gmail.com")
+        db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -77,7 +81,7 @@ public class FireStoreHandler {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
+                showError(e);
             }
         });
     }
@@ -104,9 +108,56 @@ public class FireStoreHandler {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
+                    showError(e);
                 }
             });
         }
+    }
+
+    public void addItemToCart(final String materialId, final int value) {
+
+        db.collection("userCarts").whereEqualTo("userIdOwner", getUser())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot thisDoc = queryDocumentSnapshots.getDocuments().get(0);
+                HashMap<String, Long> materialList = (HashMap<String, Long>) thisDoc.get("materialList");
+
+                long updatedValue = value;
+                String fieldKey = "materialList." + materialId;
+
+                if (materialList.get(materialId) != null)
+                    updatedValue = materialList.get(materialId) + value;
+
+                db.collection("userCarts").document(thisDoc.getId())
+                        .update(
+                                fieldKey,updatedValue
+                        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(context, "Added to cart", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showError(e);
+            }
+        });
+    }
+
+    private String getUser(){
+        return "chinmoy12c@gmail.com";
+    }
+
+    private void showError(Exception e){
+        Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
+        e.printStackTrace();
     }
 }

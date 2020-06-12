@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoryDetails">
+    tools:context=".CategoryDetails"
+    android:background="#ffffff">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/categoryToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FCF9F9"
-        android:theme="@style/ToolbarTheme"
         />
 
     <View

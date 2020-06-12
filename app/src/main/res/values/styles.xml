@@ -12,7 +12,4 @@
 
     </style>
 
-    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:fontFamily">@font/playball</item>
-    </style>
 </resources>

@@ -65,7 +65,7 @@ public class RecommendedRecyclerAdapter extends RecyclerView.Adapter<Recommended
             final MaterialObject materialObject = new MaterialObject(singleItem);
 
             itemName.setText(materialObject.getItemName());
-            itemPrice.setText("Rs. " + materialObject.getBestPrice() + "/kg");
+            itemPrice.setText("Rs. " + materialObject.getBestPrice());
             Picasso.get().load(materialObject.getImgPath()).into(itemImage);
 
             materialCard.setOnClickListener(new View.OnClickListener() {

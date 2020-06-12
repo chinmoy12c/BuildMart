@@ -163,6 +163,70 @@
 
     </ScrollView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/quantitySelectorCard"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="10dp"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/quantityBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Select quantity"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/saira_medium"
+                android:textSize="25sp"/>
+
+            <NumberPicker
+                android:id="@+id/itemQuantitySelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                />
+
+            <View
+                android:id="@+id/middleView"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+
+            <Button
+                android:id="@+id/addToCartConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:layout_toStartOf="@+id/middleView"
+                android:background="#F10A0A"
+                android:text="cancel"
+                android:textColor="@android:color/white"
+                android:onClick="hideSelector"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@+id/middleView"
+                android:background="#00cc00"
+                android:text="Add"
+                android:textColor="@android:color/white"
+                android:onClick="addItemToCart"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <RelativeLayout
         android:id="@+id/buyingContents"
         android:layout_width="match_parent"
@@ -172,13 +236,21 @@
 
         <Button
             android:id="@+id/addToCartButton"
-            android:layout_width="170dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
+            android:layout_toStartOf="@+id/middleSep"
             android:text="Add to cart"
             android:textColor="#ffffff"
-            android:background="@android:color/holo_orange_light"/>
+            android:background="@android:color/holo_orange_light"
+            android:onClick="showSelector"/>
+
+        <View
+            android:id="@+id/middleSep"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"/>
 
         <Button
             android:layout_width="match_parent"

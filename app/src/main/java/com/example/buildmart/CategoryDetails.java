@@ -25,17 +25,11 @@ public class CategoryDetails extends AppCompatActivity {
 
         materialList = findViewById(R.id.materialList);
         toolbar = findViewById(R.id.categoryToolbar);
-        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         String category  = intent.getStringExtra("category");
+        toolbar.setTitle(category.toUpperCase());
+        setSupportActionBar(toolbar);
         fireStoreHandler.getCategoryMaterials(category, materialList);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
     }
 }
