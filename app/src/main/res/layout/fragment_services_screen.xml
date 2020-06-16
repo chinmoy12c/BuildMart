@@ -1,14 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ServicesScreen">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@raw/path2"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        tools:context=".ServicesScreen">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/servicesBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Our Services"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"/>
+
+        <View
+            android:id="@+id/middleSep"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/plumbingService"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/servicesBanner"
+            android:layout_toStartOf="@+id/middleSep"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="100dp"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@raw/plumber"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/plumbingServiceBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/plumbingService"
+            android:layout_toStartOf="@+id/middleSep"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Plumber"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/saira_extra_bold"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/electricalService"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/servicesBanner"
+            android:layout_toEndOf="@+id/middleSep"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="100dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@raw/electrician"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/electricalServiceBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/plumbingService"
+            android:layout_toEndOf="@+id/middleSep"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Electrician"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/saira_extra_bold"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/carpenterService"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/plumbingServiceBanner"
+            android:layout_toStartOf="@+id/middleSep"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="100dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@raw/carpenter"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/carpentryServiceBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/carpenterService"
+            android:layout_toStartOf="@+id/middleSep"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Carpenter"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/saira_extra_bold"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/painterService"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/electricalServiceBanner"
+            android:layout_toEndOf="@+id/middleSep"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="100dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@raw/painter"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/painterServiceBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/painterService"
+            android:layout_toEndOf="@+id/middleSep"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Painter"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:fontFamily="@font/saira_extra_bold"/>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -89,7 +89,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/electrical"/>
+                    android:src="@drawable/electrical"/>
 
                 <TextView
                     android:id="@+id/electricText"
@@ -120,7 +120,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/building_mat"/>
+                    android:src="@drawable/building_mat"/>
 
                 <TextView
                     android:id="@+id/buildingText"
@@ -151,7 +151,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/tiles"/>
+                    android:src="@drawable/tiles"/>
 
                 <TextView
                     android:id="@+id/tilesText"
@@ -176,7 +176,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/plumbing"/>
+                    android:src="@drawable/plumbing"/>
 
                 <TextView
                     android:id="@+id/plumbingText"
@@ -209,7 +209,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/paint"/>
+                    android:src="@drawable/paint"/>
 
                 <TextView
                     android:id="@+id/paintsText"
@@ -242,7 +242,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:src="@raw/sanitize"/>
+                    android:src="@raw/sanitary"/>
 
                 <TextView
                     android:id="@+id/sanitaryText"

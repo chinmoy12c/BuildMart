@@ -162,6 +162,7 @@ public class FireStoreHandler {
                 .orderBy("name")
                 .startAt(searchText)
                 .endAt(searchText+"\uf8ff")
+                .limit(10)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
