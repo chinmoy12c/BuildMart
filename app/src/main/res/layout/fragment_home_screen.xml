@@ -37,7 +37,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/trendingSection"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="350dp"
             android:layout_below="@+id/trendingBanner"
             android:layout_margin="10dp"
             app:cardCornerRadius="10dp">

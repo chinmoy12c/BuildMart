@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -24,8 +23,6 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
 
     private RecyclerView dealsOfDayList, recommendedList;
     private CarouselView carouselView;
-    private TrendingRecyclerAdapter trendingRecyclerAdapter;
-    private RecommendedRecyclerAdapter recommendedRecyclerAdapter;
     private ImageView buildingCategory, electricalCategory, tilesCategory, plumbingCategory, paintsCategory, sanitryCategory;
     private FireStoreHandler fireStoreHandler;
 
@@ -73,10 +70,7 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
 
         fireStoreHandler = new FireStoreHandler(getContext());
 
-        trendingRecyclerAdapter = new TrendingRecyclerAdapter(getContext());
-        dealsOfDayList.setLayoutManager(new GridLayoutManager(getContext(),3));
-        dealsOfDayList.setAdapter(trendingRecyclerAdapter);
-
+        fireStoreHandler.getDealsOfDay(dealsOfDayList);
         fireStoreHandler.getRecommended(recommendedList);
 
         return rootView;

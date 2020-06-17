@@ -1,19 +1,14 @@
 package com.example.buildmart;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,12 +30,13 @@ public class FireStoreHandler {
     private Context context;
     private FirebaseFirestore db;
     private StorageReference imageRef;
-    private final String MATERIAL_COLLECTION = "materials";
-    private final String CART_COLLECTION = "userCarts";
-    private final String SERVICE_COLLECTION = "services";
-    private final String IMAGE_PATH = "imagePack";
-    private final String WORK_COLLECTION = "works";
-    private final String SHOP_DETAILS = "shopDetails";
+    private static final String MATERIAL_COLLECTION = "materials";
+    private static final String CART_COLLECTION = "userCarts";
+    private static final String SERVICE_COLLECTION = "services";
+    private static final String IMAGE_PATH = "imagePack";
+    private static final String WORK_COLLECTION = "works";
+    private static final String SHOP_DETAILS = "shopDetails";
+    private static final String DEALS_OF_DAY = "dealsOfTheDay";
 
     FireStoreHandler(Context context) {
         this.context = context;
@@ -97,7 +93,7 @@ public class FireStoreHandler {
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                RecommendedRecyclerAdapter recommendedRecyclerAdapter = new RecommendedRecyclerAdapter(context, queryDocumentSnapshots);
+                MaterialObjectAdapter recommendedRecyclerAdapter = new MaterialObjectAdapter(context, queryDocumentSnapshots);
                 recommendedList.setAdapter(recommendedRecyclerAdapter);
                 recommendedList.setLayoutManager(new GridLayoutManager(context, 2));
             }
@@ -293,9 +289,27 @@ public class FireStoreHandler {
                             messageIntent.setData(Uri.parse(url));
                             context.startActivity(messageIntent);
                         } catch (PackageManager.NameNotFoundException e) {
-                            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Whatsapp app is not installed in your phone", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void getDealsOfDay(final RecyclerView dealsOfDayList) {
+        db.collection(DEALS_OF_DAY).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        MaterialObjectAdapter dealsOfDayAdapter = new MaterialObjectAdapter(context, queryDocumentSnapshots);
+                        dealsOfDayList.setAdapter(dealsOfDayAdapter);
+                        dealsOfDayList.setLayoutManager(new GridLayoutManager(context, 2));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
