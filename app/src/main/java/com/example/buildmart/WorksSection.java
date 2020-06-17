@@ -8,28 +8,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class ServiceDetailsScreen extends AppCompatActivity {
+public class WorksSection extends AppCompatActivity {
 
-    private RecyclerView serviceSectionList;
+    private RecyclerView worksList;
     private Toolbar toolbar;
     private FireStoreHandler fireStoreHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_details_screen);
+        setContentView(R.layout.activity_service_section_works);
 
-        toolbar = findViewById(R.id.servicesToolbar);
-        toolbar.setTitle("Services Section");
-        setSupportActionBar(toolbar);
-
-        serviceSectionList = findViewById(R.id.servicesSectionList);
+        worksList = findViewById(R.id.worksSectionList);
+        toolbar = findViewById(R.id.workSectionToolbar);
 
         fireStoreHandler = new FireStoreHandler(this);
 
-        Intent currentIntent = getIntent();
-        String serviceSection = currentIntent.getExtras().getString("serviceSection");
+        toolbar.setTitle("Works List");
+        setSupportActionBar(toolbar);
 
-        fireStoreHandler.getServiceSections(serviceSectionList, serviceSection);
+        Intent currentIntent = getIntent();
+
+        fireStoreHandler.getWorks(worksList, currentIntent.getExtras().getString("sectionDoc"));
     }
 }

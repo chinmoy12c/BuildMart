@@ -1,6 +1,10 @@
 package com.example.buildmart;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +28,44 @@ public class FireStoreHandler {
 
     private Context context;
     private FirebaseFirestore db;
+    private StorageReference imageRef;
     private final String MATERIAL_COLLECTION = "materials";
     private final String CART_COLLECTION = "userCarts";
+    private final String SERVICE_COLLECTION = "services";
+    private final String IMAGE_PATH = "imagePack";
+    private final String WORK_COLLECTION = "works";
 
     FireStoreHandler(Context context) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
+        imageRef = FirebaseStorage.getInstance().getReference().child(IMAGE_PATH);
+    }
+
+    private String getUser(){
+        return "chinmoy12c@gmail.com";
+    }
+
+    private void showError(Exception e){
+        Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
+        e.printStackTrace();
+    }
+
+    public void setImageFromPath(String imgName, final ImageView serviceName) {
+
+        Log.d("imagePath",imageRef.getPath());
+        imageRef.child(imgName + ".png").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(serviceName);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
     }
 
     void getCategoryMaterials(String category, final RecyclerView materialList) {
@@ -112,7 +151,7 @@ public class FireStoreHandler {
 
     public void addItemToCart(final String materialId, final int value) {
 
-        db.collection("userCarts").whereEqualTo("userIdOwner", getUser())
+        db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -125,7 +164,7 @@ public class FireStoreHandler {
                 if (materialList.get(materialId) != null)
                     updatedValue = materialList.get(materialId) + value;
 
-                db.collection("userCarts").document(thisDoc.getId())
+                db.collection(CART_COLLECTION).document(thisDoc.getId())
                         .update(
                                 fieldKey,updatedValue
                         ).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -148,17 +187,8 @@ public class FireStoreHandler {
         });
     }
 
-    private String getUser(){
-        return "chinmoy12c@gmail.com";
-    }
-
-    private void showError(Exception e){
-        Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
-        e.printStackTrace();
-    }
-
     public void searchItem(final RecyclerView searchListRecycler, String searchText) {
-        db.collection("materials")
+        db.collection(MATERIAL_COLLECTION)
                 .orderBy("name")
                 .startAt(searchText)
                 .endAt(searchText+"\uf8ff")
@@ -170,6 +200,48 @@ public class FireStoreHandler {
                         MaterialListAdapter searchListAdapter = new MaterialListAdapter(context, queryDocumentSnapshots);
                         searchListRecycler.setAdapter(searchListAdapter);
                         searchListRecycler.setLayoutManager(new LinearLayoutManager(context));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void getServiceSections(final RecyclerView serviceSectionList, String serviceSection) {
+        db.collection(SERVICE_COLLECTION)
+                .whereEqualTo("serviceSection", serviceSection)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ServiceSectionAdapter serviceSectionAdapter = new ServiceSectionAdapter(context, queryDocumentSnapshots);
+                        serviceSectionList.setAdapter(serviceSectionAdapter);
+                        serviceSectionList.setLayoutManager(new LinearLayoutManager(context));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void getWorks(final RecyclerView worksList, String sectionDoc) {
+        db.collection(SERVICE_COLLECTION).document(sectionDoc)
+                .collection(WORK_COLLECTION)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.size() != 0) {
+                            WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots);
+                            worksList.setAdapter(worksSectionAdapter);
+                            worksList.setLayoutManager(new LinearLayoutManager(context));
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

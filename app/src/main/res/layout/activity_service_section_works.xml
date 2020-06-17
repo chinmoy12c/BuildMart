@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ServiceDetailsScreen">
+    tools:context=".WorksSection">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/servicesToolbar"
+        android:id="@+id/workSectionToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.3dp"
+        android:layout_height="0.2dp"
         android:background="@android:color/darker_gray"
-        android:layout_below="@+id/servicesToolbar"/>
+        android:layout_below="@+id/workSectionToolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/servicesSectionList"
+        android:id="@+id/worksSectionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/servicesToolbar"
+        android:layout_below="@+id/workSectionToolbar"
         android:layout_margin="10dp"/>
 
 </RelativeLayout>

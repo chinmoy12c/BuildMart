@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ServiceDetailsScreen"></activity>
+        <activity android:name=".WorksSection"></activity>
+        <activity android:name=".ServiceDetailsScreen" />
         <activity android:name=".ViewCart" />
         <activity android:name=".ItemDetailsScreen" />
         <activity android:name=".CategoryDetails" />
