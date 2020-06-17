@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.Bundle;
@@ -22,11 +23,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.security.Permission;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
+    private FireStoreHandler fireStoreHandler;
 
     int pic[] = {R.raw.construction1,R.raw.construction2,R.raw.construction3,R.raw.construction4};
 
@@ -48,7 +52,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+        fireStoreHandler = new FireStoreHandler(this);
+
         toolbar.setOnMenuItemClickListener(this);
+
+        new PermissionHandler(this, new String[]{Manifest.permission.CALL_PHONE}).requestPermissions();
     }
 
     @Override
@@ -100,6 +108,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.viewCart:
                 startActivity(new Intent(this, ViewCart.class));
+                break;
+
+            case R.id.callShop:
+                fireStoreHandler.placeShopCall();
+                break;
+
+            case R.id.whatsappMessage:
+                fireStoreHandler.sendWhatsappMessage();
                 break;
         }
         return false;

@@ -92,10 +92,19 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+
         switch (item.getItemId()) {
 
             case R.id.viewCart:
                 startActivity(new Intent(this, ViewCart.class));
+                break;
+
+            case R.id.callShop:
+                fireStoreHandler.placeShopCall();
+                break;
+
+            case R.id.whatsappMessage:
+                fireStoreHandler.sendWhatsappMessage();
                 break;
         }
         return false;

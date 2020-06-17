@@ -1,13 +1,19 @@
 package com.example.buildmart;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +40,7 @@ public class FireStoreHandler {
     private final String SERVICE_COLLECTION = "services";
     private final String IMAGE_PATH = "imagePack";
     private final String WORK_COLLECTION = "works";
+    private final String SHOP_DETAILS = "shopDetails";
 
     FireStoreHandler(Context context) {
         this.context = context;
@@ -41,18 +48,18 @@ public class FireStoreHandler {
         imageRef = FirebaseStorage.getInstance().getReference().child(IMAGE_PATH);
     }
 
-    private String getUser(){
+    private String getUser() {
         return "chinmoy12c@gmail.com";
     }
 
-    private void showError(Exception e){
+    private void showError(Exception e) {
         Toast.makeText(context, "Oops! Something went wrong.", Toast.LENGTH_LONG).show();
         e.printStackTrace();
     }
 
     public void setImageFromPath(String imgName, final ImageView serviceName) {
 
-        Log.d("imagePath",imageRef.getPath());
+        Log.d("imagePath", imageRef.getPath());
         imageRef.child(imgName + ".png").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -69,7 +76,7 @@ public class FireStoreHandler {
     }
 
     void getCategoryMaterials(String category, final RecyclerView materialList) {
-        db.collection(MATERIAL_COLLECTION).whereEqualTo("category",category)
+        db.collection(MATERIAL_COLLECTION).whereEqualTo("category", category)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -107,7 +114,7 @@ public class FireStoreHandler {
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                HashMap<String,Long> matQuantities = (HashMap<String, Long>) queryDocumentSnapshots.getDocuments()
+                HashMap<String, Long> matQuantities = (HashMap<String, Long>) queryDocumentSnapshots.getDocuments()
                         .get(0)
                         .get("materialList");
 
@@ -166,7 +173,7 @@ public class FireStoreHandler {
 
                 db.collection(CART_COLLECTION).document(thisDoc.getId())
                         .update(
-                                fieldKey,updatedValue
+                                fieldKey, updatedValue
                         ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -191,7 +198,7 @@ public class FireStoreHandler {
         db.collection(MATERIAL_COLLECTION)
                 .orderBy("name")
                 .startAt(searchText)
-                .endAt(searchText+"\uf8ff")
+                .endAt(searchText + "\uf8ff")
                 .limit(10)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -241,6 +248,53 @@ public class FireStoreHandler {
                             WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots);
                             worksList.setAdapter(worksSectionAdapter);
                             worksList.setLayoutManager(new LinearLayoutManager(context));
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void placeShopCall() {
+        db.collection(SHOP_DETAILS).document(SHOP_DETAILS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
+                                documentSnapshot.get("phoneNumber")));
+                        context.startActivity(callIntent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void sendWhatsappMessage() {
+        db.collection(SHOP_DETAILS).document(SHOP_DETAILS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String contact = (String) documentSnapshot.get("phoneNumber"); // use country code with your phone number
+                        String url = "https://api.whatsapp.com/send?phone=" + contact;
+                        try {
+                            PackageManager pm = context.getPackageManager();
+                            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                            Intent messageIntent = new Intent(Intent.ACTION_VIEW);
+                            messageIntent.setData(Uri.parse(url));
+                            context.startActivity(messageIntent);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            Toast.makeText(context, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
                         }
                     }
                 })

@@ -3,10 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/placeCall"
+        android:id="@+id/whatsappMessage"
+        android:icon="@drawable/whatsapp"
+        android:title="Whatsapp message"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/callShop"
         android:title="Call shop"
         android:icon="@drawable/ic_call_black_24dp"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/viewCart"
