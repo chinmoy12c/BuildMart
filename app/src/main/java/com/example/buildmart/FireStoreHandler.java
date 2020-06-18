@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,14 +39,17 @@ public class FireStoreHandler {
     private static final String SHOP_DETAILS = "shopDetails";
     private static final String DEALS_OF_DAY = "dealsOfTheDay";
 
+    private FirebaseAuth firebaseAuth;
+
     FireStoreHandler(Context context) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
         imageRef = FirebaseStorage.getInstance().getReference().child(IMAGE_PATH);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     private String getUser() {
-        return "chinmoy12c@gmail.com";
+        return firebaseAuth.getCurrentUser().getEmail();
     }
 
     private void showError(Exception e) {
@@ -318,5 +322,13 @@ public class FireStoreHandler {
                         showError(e);
                     }
                 });
+    }
+
+    public void addUserCart(String email) {
+        HashMap<String, Object> userCart = new HashMap<>();
+        userCart.put("userIdOwner", email);
+        userCart.put("materialList", new HashMap<String, Long>());
+
+        db.collection(CART_COLLECTION).add(userCart);
     }
 }

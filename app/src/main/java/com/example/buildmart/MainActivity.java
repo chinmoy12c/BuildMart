@@ -20,14 +20,17 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import java.security.Permission;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+    private NavigationView drawerNavigation;
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
     private FireStoreHandler fireStoreHandler;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         drawerLayout = findViewById(R.id.mainNavDrawer);
+        drawerNavigation = findViewById(R.id.navDrawer);
         toolbar = findViewById(R.id.mainToolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open_drawer,R.string.open_drawer);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        drawerNavigation.setNavigationItemSelectedListener(this);
+
 
         fireStoreHandler = new FireStoreHandler(this);
 
@@ -82,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.rateCalculatorScreen:
                 loadScreen(new RateCalculatorScreen());
                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
+                break;
+
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginScreen.class));
                 break;
         }
         return false;
