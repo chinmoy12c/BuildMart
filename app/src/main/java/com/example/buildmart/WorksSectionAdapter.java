@@ -40,6 +40,11 @@ public class WorksSectionAdapter extends RecyclerView.Adapter<WorksSectionAdapte
         return worksList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView workName, workPrice;

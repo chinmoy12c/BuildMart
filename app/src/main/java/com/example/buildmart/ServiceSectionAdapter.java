@@ -45,6 +45,11 @@ public class ServiceSectionAdapter extends RecyclerView.Adapter<ServiceSectionAd
         return serviceSections.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView serviceName;

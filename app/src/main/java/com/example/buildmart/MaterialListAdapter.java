@@ -44,6 +44,11 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
         return materials.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private CardView singleMaterialObject;
