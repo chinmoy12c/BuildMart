@@ -1,5 +1,6 @@
 package com.example.buildmart;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -330,5 +332,26 @@ public class FireStoreHandler {
         userCart.put("materialList", new HashMap<String, Long>());
 
         db.collection(CART_COLLECTION).add(userCart);
+    }
+
+    public void postRequirement(String postText, final Activity requirementActivity) {
+        HashMap<String, String> postDetails = new HashMap<>();
+        postDetails.put("username", getUser());
+        postDetails.put("postText", postText);
+
+        db.collection("requirements").add(postDetails)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, "Requirement posted", Toast.LENGTH_LONG).show();
+                        requirementActivity.finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
     }
 }

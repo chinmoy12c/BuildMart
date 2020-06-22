@@ -12,6 +12,7 @@
         android:roundIcon="@raw/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PostRequirementScreen"></activity>
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +25,7 @@
         <activity android:name=".ViewCart" />
         <activity android:name=".ItemDetailsScreen" />
         <activity android:name=".CategoryDetails" />
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

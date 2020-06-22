@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostRequirementScreen">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/postRequirementToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/postRequirementToolbar"/>
+
+    <EditText
+        android:id="@+id/postText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/cancelPost"
+        android:background="@drawable/rounded_form_field"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/postRequirementToolbar"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:padding="20dp"
+        />
+
+    <View
+        android:id="@+id/middleSep"
+        android:layout_width="1dp"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/cancelPost"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/middleSep"
+        android:layout_margin="10dp"
+        android:background="#F10A0A"
+        android:text="cancel"
+        android:textColor="#ffffff"
+        android:onClick="cancelPost"/>
+
+    <Button
+        android:id="@+id/confirmPost"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/middleSep"
+        android:layout_margin="10dp"
+        android:background="#00cc00"
+        android:text="confirm"
+        android:textColor="#ffffff"
+        android:onClick="confirmPost"/>
+
+</RelativeLayout>

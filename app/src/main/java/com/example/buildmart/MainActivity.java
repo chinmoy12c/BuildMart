@@ -6,26 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
-import android.hardware.Sensor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
-
-import java.security.Permission;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -93,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginScreen.class));
+                break;
+
+            case R.id.postRequirement:
+                startActivity(new Intent(this, PostRequirementScreen.class));
                 break;
         }
         return false;
