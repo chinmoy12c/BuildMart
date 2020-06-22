@@ -1,28 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ServiceDetailsScreen">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/servicesToolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        tools:context=".ServiceDetailsScreen">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/servicesToolbar"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/servicesToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/servicesSectionList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/servicesToolbar"
-        android:layout_margin="10dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/servicesToolbar"/>
 
-</RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/servicesSectionList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/servicesToolbar"
+            android:layout_margin="10dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/servicesSectionList"
+            android:id="@+id/unknownServiceItem"
+            android:onClick="postServiceRequirement">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/unknownServiceImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_touch_app_black_24dp" />
+
+                <TextView
+                    android:id="@+id/unknownServiceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/unknownServiceImage"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:textStyle="bold"
+                    android:text="Post your requirement"
+                    android:textSize="23sp" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostRequirementScreen">
+    tools:context=".PostUnknownService">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/postRequirementToolbar"
+        android:id="@+id/unknownServiceToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -16,16 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:layout_below="@+id/postRequirementToolbar"/>
+        android:layout_below="@+id/unknownServiceToolbar"/>
 
     <EditText
-        android:id="@+id/postText"
+        android:id="@+id/postTextUnknown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/cancelPost"
         android:background="@drawable/square_input"
         android:layout_margin="10dp"
-        android:layout_below="@+id/postRequirementToolbar"
+        android:layout_below="@+id/unknownServiceToolbar"
         android:inputType="textMultiLine"
         android:gravity="top"
         android:padding="20dp"

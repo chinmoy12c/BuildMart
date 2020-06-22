@@ -12,7 +12,8 @@
         android:roundIcon="@raw/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PostRequirementScreen"></activity>
+        <activity android:name=".PostUnknownService"></activity>
+        <activity android:name=".PostRequirementScreen" />
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,7 @@
         <activity android:name=".ViewCart" />
         <activity android:name=".ItemDetailsScreen" />
         <activity android:name=".CategoryDetails" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

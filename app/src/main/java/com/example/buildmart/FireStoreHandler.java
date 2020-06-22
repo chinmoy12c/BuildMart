@@ -354,4 +354,25 @@ public class FireStoreHandler {
                     }
                 });
     }
+
+    public void postUnknownRequirement(String postText, final PostUnknownService postUnknownService) {
+        HashMap<String, String> postDetails = new HashMap<>();
+        postDetails.put("username", getUser());
+        postDetails.put("postText", postText);
+
+        db.collection("serviceRequirement").add(postDetails)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, "Requirement posted", Toast.LENGTH_LONG).show();
+                        postUnknownService.finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
 }

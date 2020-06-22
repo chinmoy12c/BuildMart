@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class ServiceDetailsScreen extends AppCompatActivity {
 
@@ -31,5 +32,9 @@ public class ServiceDetailsScreen extends AppCompatActivity {
         String serviceSection = currentIntent.getExtras().getString("serviceSection");
 
         fireStoreHandler.getServiceSections(serviceSectionList, serviceSection);
+    }
+
+    public void postServiceRequirement(View view) {
+        startActivity(new Intent(this, PostUnknownService.class));
     }
 }
