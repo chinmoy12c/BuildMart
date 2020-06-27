@@ -131,7 +131,6 @@
                         android:id="@+id/rate3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:textAlignment="center"
                         android:text="60"
                         android:textSize="17sp"
@@ -240,29 +239,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:layout_toStartOf="@+id/middleSep"
+            android:layout_marginEnd="10dp"
             android:text="Add to cart"
             android:textColor="#ffffff"
             android:background="@android:color/holo_orange_light"
             android:onClick="showSelector"/>
-
-        <View
-            android:id="@+id/middleSep"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/addToCartButton"
-            android:text="Buy now"
-            android:textColor="#ffffff"
-            android:background="#00cc00" />
 
     </RelativeLayout>
 

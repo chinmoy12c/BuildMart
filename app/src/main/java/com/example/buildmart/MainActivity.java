@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         toolbar.setOnMenuItemClickListener(this);
 
-        new PermissionHandler(this, new String[]{Manifest.permission.CALL_PHONE}).requestPermissions();
+        new PermissionHandler(this, new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}).requestPermissions();
     }
 
     @Override

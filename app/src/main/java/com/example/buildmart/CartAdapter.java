@@ -21,11 +21,46 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     private Context context;
     private ArrayList<MaterialObject> cartItems;
     private ArrayList<Long> quantities;
+    private String totalAmount;
 
-    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities) {
+    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities, TextView totalAmountText) {
         this.context = context;
         this.cartItems = cartItems;
         this.quantities = quantities;
+        totalAmount = getAmount();
+        totalAmountText.setText("Rs. " + totalAmount);
+    }
+
+    ArrayList<MaterialObject> getCartItems(){
+        return cartItems;
+    }
+
+    ArrayList<Long> getQuantities() {
+        return quantities;
+    }
+
+    String getTotalAmount() {
+        return totalAmount;
+    }
+
+    private String getAmount() {
+        long totalAmount = 0;
+
+        for (int x = 0; x<cartItems.size(); x++) {
+            MaterialObject currentObject = cartItems.get(x);
+            long quantity = quantities.get(0);
+            long ratePerUnit;
+
+            if (quantity <= currentObject.getQuantities().get(0))
+                ratePerUnit = currentObject.getRates().get(0);
+            else if (quantity <= currentObject.getQuantities().get(1))
+                ratePerUnit = currentObject.getRates().get(1);
+            else
+                ratePerUnit = currentObject.getRates().get(2);
+
+            totalAmount += quantity * ratePerUnit;
+        }
+        return String.valueOf(totalAmount);
     }
 
     @NonNull

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -111,7 +112,7 @@ public class FireStoreHandler {
         });
     }
 
-    public void getCart(final RecyclerView cartRecycler) {
+    public void getCart(final RecyclerView cartRecycler, final TextView totalAmountText) {
         db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -120,7 +121,7 @@ public class FireStoreHandler {
                         .get(0)
                         .get("materialList");
 
-                getCartMaterials(matQuantities, cartRecycler);
+                getCartMaterials(matQuantities, cartRecycler, totalAmountText);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -130,7 +131,7 @@ public class FireStoreHandler {
         });
     }
 
-    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler) {
+    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler, final TextView totalAmountText) {
         final ArrayList<MaterialObject> cartMaterials = new ArrayList<>();
         final ArrayList<Long> quantities = new ArrayList<>();
 
@@ -144,7 +145,7 @@ public class FireStoreHandler {
                     quantities.add(matQuantities.get(matId));
 
                     if (cartMaterials.size() == matQuantities.size()) {
-                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities);
+                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities, totalAmountText);
                         cartRecycler.setLayoutManager(new LinearLayoutManager(context));
                         cartRecycler.setAdapter(cartAdapter);
                     }
