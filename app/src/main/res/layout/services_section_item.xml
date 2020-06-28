@@ -13,8 +13,7 @@
             android:id="@+id/serviceImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:src="@raw/plug" />
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/serviceName"
@@ -24,7 +23,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:textStyle="bold"
-            android:text="Basin/Sink"
             android:textSize="23sp" />
 
     </RelativeLayout>

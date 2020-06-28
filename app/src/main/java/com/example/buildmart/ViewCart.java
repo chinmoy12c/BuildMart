@@ -23,6 +23,8 @@ import com.paytm.pgsdk.TransactionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -48,7 +50,8 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     }
 
     public void checkoutCart(View view) {
-        getToken();
+        if (cartRecycler.getAdapter() != null)
+            getToken();
     }
 
     private void getToken() {
@@ -96,15 +99,17 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     private void startPayment(String txnToken, String orderId, String amount) {
         System.out.println(txnToken);
 
-        String callbackurl = "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID="+orderId;
+        String callbackurl = Constants.callbackUrl + orderId;
         PaytmOrder paytmOrder = new PaytmOrder(orderId, Constants.M_ID, txnToken, amount, callbackurl);
         TransactionManager transactionManager = new TransactionManager(paytmOrder, this);
+        transactionManager.setShowPaymentUrl(Constants.paymentUrl);
         transactionManager.startTransaction(this, ActivityRequestCode);
     }
 
     @Override
     public void onTransactionResponse(Bundle bundle) {
-        showToast("Success");
+        HashMap<String, Object> orderData = getOrderData();
+        fireStoreHandler.addOrder(orderData, this);
     }
 
     @Override
@@ -151,11 +156,41 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ActivityRequestCode && data != null) {
-            Toast.makeText(this, data.getStringExtra("nativeSdkForMerchantMessage")
-                    + data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
+            try {
+                JSONObject response = new JSONObject(data.getStringExtra("response"));
 
-            System.out.println(data.getStringExtra("nativeSdkForMerchantMessage")
-                    + data.getStringExtra("response"));
+                if (response.get("STATUS") != null && response.get("STATUS").equals("TXN_SUCCESS")) {
+                    HashMap<String, Object> orderData = getOrderData();
+                    fireStoreHandler.addOrder(orderData, this);
+                }
+                else {
+                    showToast("Transaction failed!");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                showToast("Something went wrong! Try again.");
+            }
         }
+    }
+
+    private HashMap<String, Object> getOrderData() {
+        CartAdapter cartAdapter  = (CartAdapter) cartRecycler.getAdapter();
+        ArrayList<MaterialObject> cartItems = cartAdapter.getCartItems();
+        ArrayList<Long> quantities = cartAdapter.getQuantities();
+
+        HashMap<String, Object> orderData = new HashMap<>();
+        HashMap<String, Long> orderItems = new HashMap<>();
+
+        for (int x = 0; x < cartItems.size(); x++) {
+            orderItems.put(cartItems.get(x).getMaterialId(), quantities.get(0));
+        }
+
+        orderData.put("orderItems", orderItems);
+        orderData.put("username", fireStoreHandler.getUser());
+        orderData.put("orderTimestamp", new Date());
+        orderData.put("cartId", cartAdapter.getCartId());
+        orderData.put("totalAmount", getAmount());
+
+        return orderData;
     }
 }

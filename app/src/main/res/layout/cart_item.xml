@@ -11,8 +11,7 @@
             android:id="@+id/cartItemImage"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/amb_cement"/>
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/cartItemName"
@@ -21,8 +20,6 @@
             android:layout_toEndOf="@+id/cartItemImage"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:text="Ambuja cement"
-
             android:fontFamily="@font/saira_bold"
             android:textSize="16sp"/>
 
@@ -41,8 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/multText"
-            android:layout_margin="10dp"
-            android:text="5"
+            android:layout_marginTop="10dp"
             android:textSize="16sp"
             android:fontFamily="@font/saira_bold"/>
 
@@ -53,7 +49,6 @@
             android:layout_toEndOf="@+id/cartItemImage"
             android:layout_below="@+id/cartItemName"
             android:layout_marginStart="10dp"
-            android:text="150/kg"
             android:textSize="16sp"
             android:fontFamily="sans-serif-condensed"
             android:textStyle="bold"
@@ -63,7 +58,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:layout_margin="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="30dp"
             android:src="@drawable/ic_delete_black_24dp"/>
 
     </RelativeLayout>

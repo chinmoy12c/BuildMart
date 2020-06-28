@@ -22,11 +22,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     private ArrayList<MaterialObject> cartItems;
     private ArrayList<Long> quantities;
     private String totalAmount;
+    private String cartId;
 
-    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities, TextView totalAmountText) {
+    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities, TextView totalAmountText, String cartId) {
         this.context = context;
         this.cartItems = cartItems;
         this.quantities = quantities;
+        this.cartId = cartId;
         totalAmount = getAmount();
         totalAmountText.setText("Rs. " + totalAmount);
     }
@@ -41,6 +43,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     String getTotalAmount() {
         return totalAmount;
+    }
+
+    String getCartId() {
+        return cartId;
     }
 
     private String getAmount() {

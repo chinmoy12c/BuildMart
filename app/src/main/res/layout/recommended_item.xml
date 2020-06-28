@@ -17,8 +17,7 @@
             android:id="@+id/itemImage"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/amb_cement"/>
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/itemName"
@@ -26,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/itemImage"
             android:layout_marginStart="10dp"
-            android:text="Ambuja cement"
             android:fontFamily="@font/saira_medium"
             android:textAlignment="center"
             android:textSize="16sp"/>
@@ -41,7 +39,6 @@
             android:background="@drawable/rounded_back"
             android:textAlignment="center"
             android:textColor="#ffffff"
-            android:text="Rs. 400/Kg"
             android:textStyle="bold"
             android:fontFamily="sans-serif-condensed"
             android:textSize="17sp"/>

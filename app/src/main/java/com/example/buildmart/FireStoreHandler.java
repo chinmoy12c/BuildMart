@@ -41,6 +41,8 @@ public class FireStoreHandler {
     private static final String WORK_COLLECTION = "works";
     private static final String SHOP_DETAILS = "shopDetails";
     private static final String DEALS_OF_DAY = "dealsOfTheDay";
+    private static final String SHOP_ORDERS = "shopOrders";
+    private static final String SHOP_SERVICE_ORDERS = "shopServiceOrders";
 
     private FirebaseAuth firebaseAuth;
 
@@ -51,7 +53,7 @@ public class FireStoreHandler {
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    private String getUser() {
+    String getUser() {
         return firebaseAuth.getCurrentUser().getEmail();
     }
 
@@ -60,14 +62,14 @@ public class FireStoreHandler {
         e.printStackTrace();
     }
 
-    public void setImageFromPath(String imgName, final ImageView serviceName) {
+    public void setImageFromPath(String imgName, final ImageView imageView) {
 
         Log.d("imagePath", imageRef.getPath());
         imageRef.child(imgName + ".png").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(serviceName);
+                        Picasso.get().load(uri).into(imageView);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -121,7 +123,9 @@ public class FireStoreHandler {
                         .get(0)
                         .get("materialList");
 
-                getCartMaterials(matQuantities, cartRecycler, totalAmountText);
+                String cartId = queryDocumentSnapshots.getDocuments().get(0).getId();
+
+                getCartMaterials(matQuantities, cartRecycler, totalAmountText, cartId);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -131,7 +135,7 @@ public class FireStoreHandler {
         });
     }
 
-    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler, final TextView totalAmountText) {
+    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler, final TextView totalAmountText, final String cartId) {
         final ArrayList<MaterialObject> cartMaterials = new ArrayList<>();
         final ArrayList<Long> quantities = new ArrayList<>();
 
@@ -145,7 +149,7 @@ public class FireStoreHandler {
                     quantities.add(matQuantities.get(matId));
 
                     if (cartMaterials.size() == matQuantities.size()) {
-                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities, totalAmountText);
+                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities, totalAmountText, cartId);
                         cartRecycler.setLayoutManager(new LinearLayoutManager(context));
                         cartRecycler.setAdapter(cartAdapter);
                     }
@@ -240,7 +244,7 @@ public class FireStoreHandler {
                 });
     }
 
-    public void getWorks(final RecyclerView worksList, String sectionDoc) {
+    public void getWorks(final RecyclerView worksList, String sectionDoc, final WorksSection activity) {
         db.collection(SERVICE_COLLECTION).document(sectionDoc)
                 .collection(WORK_COLLECTION)
                 .get()
@@ -248,7 +252,7 @@ public class FireStoreHandler {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.size() != 0) {
-                            WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots);
+                            WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots, activity);
                             worksList.setAdapter(worksSectionAdapter);
                             worksList.setLayoutManager(new LinearLayoutManager(context));
                         }
@@ -367,6 +371,64 @@ public class FireStoreHandler {
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, "Requirement posted", Toast.LENGTH_LONG).show();
                         postUnknownService.finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void addOrder(final HashMap<String, Object> orderData, final Activity cartActivity) {
+        db.collection(SHOP_ORDERS).add(orderData)
+        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                HashMap<String, Object> userCart = new HashMap<>();
+                userCart.put("userIdOwner", getUser());
+                userCart.put("materialList", new HashMap<String, Long>());
+
+                db.collection(CART_COLLECTION).document((String) orderData.get("cartId"))
+                        .set(userCart);
+
+                Toast.makeText(context, "Successful", Toast.LENGTH_LONG).show();
+                cartActivity.finish();
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showError(e);
+            }
+        });
+    }
+
+    public void getServiceAdvance(final int position, final WorksSectionAdapter adapter) {
+        db.collection(SHOP_DETAILS).document(SHOP_DETAILS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        long advance = documentSnapshot.getLong("serviceAdvance");
+                        adapter.getServiceToken(advance, position);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void addServiceCall(HashMap<String, Object> serviceData) {
+        db.collection(SHOP_SERVICE_ORDERS).add(serviceData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, "Service call successful", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

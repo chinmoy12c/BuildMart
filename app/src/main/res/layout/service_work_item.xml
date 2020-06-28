@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/blackDot"
             android:layout_margin="10dp"
-            android:text="Waste pipe fitting"
             android:fontFamily="@font/saira_semi_bold"
             android:textSize="18sp"
             />
@@ -34,7 +33,7 @@
             android:layout_toEndOf="@+id/blackDot"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:background="#00ff00"
+            android:background="#00cc00"
             android:text="Place service order"
             android:textColor="#ffffff"
             android:padding="5dp"/>
@@ -46,7 +45,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
             android:layout_below="@+id/workName"
-            android:text="Rs. 299"
             android:layout_marginStart="10dp"
             android:fontFamily="sans-serif-condensed"
             android:textSize="20sp"
