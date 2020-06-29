@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -114,7 +117,7 @@ public class FireStoreHandler {
         });
     }
 
-    public void getCart(final RecyclerView cartRecycler, final TextView totalAmountText) {
+    public void getCart(final RecyclerView cartRecycler, final TextView totalAmountText, final RelativeLayout progressBack) {
         db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -125,7 +128,7 @@ public class FireStoreHandler {
 
                 String cartId = queryDocumentSnapshots.getDocuments().get(0).getId();
 
-                getCartMaterials(matQuantities, cartRecycler, totalAmountText, cartId);
+                getCartMaterials(matQuantities, cartRecycler, totalAmountText, cartId, progressBack);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -135,7 +138,8 @@ public class FireStoreHandler {
         });
     }
 
-    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler, final TextView totalAmountText, final String cartId) {
+    private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler,
+                                  final TextView totalAmountText, final String cartId, RelativeLayout progressBack) {
         final ArrayList<MaterialObject> cartMaterials = new ArrayList<>();
         final ArrayList<Long> quantities = new ArrayList<>();
 
@@ -161,9 +165,11 @@ public class FireStoreHandler {
                 }
             });
         }
+
+        progressBack.setVisibility(View.INVISIBLE);
     }
 
-    public void addItemToCart(final String materialId, final int value) {
+    public void addItemToCart(final String materialId, final int value, final RelativeLayout progressBack, final CardView itemQuantityCard) {
 
         db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -184,11 +190,14 @@ public class FireStoreHandler {
                         ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        progressBack.setVisibility(View.INVISIBLE);
+                        itemQuantityCard.setVisibility(View.INVISIBLE);
                         Toast.makeText(context, "Added to cart", Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressBack.setVisibility(View.INVISIBLE);
                         showError(e);
                     }
                 });
@@ -244,7 +253,7 @@ public class FireStoreHandler {
                 });
     }
 
-    public void getWorks(final RecyclerView worksList, String sectionDoc, final WorksSection activity) {
+    public void getWorks(final RecyclerView worksList, String sectionDoc, final WorksSection activity, final RelativeLayout progressBack) {
         db.collection(SERVICE_COLLECTION).document(sectionDoc)
                 .collection(WORK_COLLECTION)
                 .get()
@@ -252,15 +261,17 @@ public class FireStoreHandler {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.size() != 0) {
-                            WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots, activity);
+                            WorksSectionAdapter worksSectionAdapter = new WorksSectionAdapter(context, queryDocumentSnapshots, activity, progressBack);
                             worksList.setAdapter(worksSectionAdapter);
                             worksList.setLayoutManager(new LinearLayoutManager(context));
+                            progressBack.setVisibility(View.INVISIBLE);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progressBack.setVisibility(View.INVISIBLE);
                         showError(e);
                     }
                 });

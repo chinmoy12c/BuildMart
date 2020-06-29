@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +23,7 @@ import java.util.ArrayList;
 public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     private Toolbar toolbar;
-    private CardView itemQuantityCard;
+    private CardView itemQuantityCard, progressLogo;
     private NumberPicker itemQuantitySelector;
     private MaterialObject itemObject;
     private ImageView itemImage;
@@ -28,6 +31,8 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
     private ArrayList<Long> quantities;
     private ArrayList<Long> rates;
     private FireStoreHandler fireStoreHandler;
+    private RelativeLayout progressBack;
+    private Animation progressAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
 
         itemImage = findViewById(R.id.materialImage);
         itemDescription = findViewById(R.id.materialDescription);
+        progressBack = findViewById(R.id.progressBack);
+        progressLogo = findViewById(R.id.progressLogo);
         quantity1 = findViewById(R.id.quantity1);
         quantity2 = findViewById(R.id.quantity2);
         quantity3 = findViewById(R.id.quantity3);
@@ -53,6 +60,7 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
         itemQuantitySelector.setMaxValue(10000);
         itemQuantitySelector.setMinValue(1);
 
+        progressAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
 
         Intent intent = getIntent();
         itemObject = (MaterialObject) intent.getExtras().getSerializable("itemData");
@@ -63,7 +71,7 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
         itemDescription.setText(itemObject.getDescription());
         quantity1.setText("Upto " + quantities.get(0));
         quantity2.setText("Upto " + quantities.get(1));
-        quantity3.setText("Upto " + quantities.get(2));
+        quantity3.setText("Over " + quantities.get(1));
         rate1.setText(String.valueOf(rates.get(0)));
         rate2.setText(String.valueOf(rates.get(1)));
         rate3.setText(String.valueOf(rates.get(2)));
@@ -78,8 +86,10 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
     }
 
     public void addItemToCart(View view) {
+        progressLogo.startAnimation(progressAnimation);
+        progressBack.setVisibility(View.VISIBLE);
         itemQuantitySelector.clearFocus();
-        fireStoreHandler.addItemToCart(itemObject.getMaterialId(), itemQuantitySelector.getValue());
+        fireStoreHandler.addItemToCart(itemObject.getMaterialId(), itemQuantitySelector.getValue(), progressBack, itemQuantityCard);
     }
 
     public void showSelector(View view) {
@@ -88,6 +98,7 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
 
     public void hideSelector(View view) {
         itemQuantityCard.setVisibility(View.INVISIBLE);
+        progressBack.setVisibility(View.INVISIBLE);
     }
 
     @Override

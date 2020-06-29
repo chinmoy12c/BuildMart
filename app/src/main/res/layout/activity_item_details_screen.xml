@@ -142,6 +142,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/saira_regular"
+                android:textSize="16sp"
                 android:textAlignment="center"/>
 
             <View
@@ -191,7 +192,7 @@
                 android:layout_centerHorizontal="true"/>
 
             <Button
-                android:id="@+id/addToCartConfirm"
+                android:id="@+id/addToCartCancel"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
@@ -237,5 +238,7 @@
             android:onClick="showSelector"/>
 
     </RelativeLayout>
+
+    <include layout="@layout/progress_back"/>
 
 </RelativeLayout>

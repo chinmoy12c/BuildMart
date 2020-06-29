@@ -3,11 +3,15 @@ package com.example.buildmart;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -33,6 +37,8 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     private RecyclerView cartRecycler;
     private FireStoreHandler fireStoreHandler;
     private TextView totalAmountText;
+    private RelativeLayout progressBack;
+    private CardView progressLogo;
 
     private Integer ActivityRequestCode = 2;
     private String TAG = "TAG";
@@ -45,13 +51,21 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         cartRecycler = findViewById(R.id.cartRecycler);
         fireStoreHandler = new FireStoreHandler(this);
         totalAmountText = findViewById(R.id.totalAmountText);
+        progressBack = findViewById(R.id.progressBack);
+        progressLogo = findViewById(R.id.progressLogo);
 
-        fireStoreHandler.getCart(cartRecycler, totalAmountText);
+        Animation progress = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
+        progressLogo.startAnimation(progress);
+        progressBack.setVisibility(View.VISIBLE);
+
+        fireStoreHandler.getCart(cartRecycler, totalAmountText, progressBack);
     }
 
     public void checkoutCart(View view) {
-        if (cartRecycler.getAdapter() != null)
+        if (cartRecycler.getAdapter() != null) {
+            progressBack.setVisibility(View.VISIBLE);
             getToken();
+        }
     }
 
     private void getToken() {
@@ -75,12 +89,14 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
                     startPayment(String.valueOf(body.get("txnToken")), orderId, amount);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressBack.setVisibility(View.INVISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                progressBack.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -97,13 +113,12 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     }
 
     private void startPayment(String txnToken, String orderId, String amount) {
-        System.out.println(txnToken);
-
         String callbackurl = Constants.callbackUrl + orderId;
         PaytmOrder paytmOrder = new PaytmOrder(orderId, Constants.M_ID, txnToken, amount, callbackurl);
         TransactionManager transactionManager = new TransactionManager(paytmOrder, this);
         transactionManager.setShowPaymentUrl(Constants.paymentUrl);
         transactionManager.startTransaction(this, ActivityRequestCode);
+        progressBack.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -192,5 +207,11 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         orderData.put("totalAmount", getAmount());
 
         return orderData;
+    }
+
+    public void hideSelector(View view) {
+    }
+
+    public void removeItemFromCart(View view) {
     }
 }

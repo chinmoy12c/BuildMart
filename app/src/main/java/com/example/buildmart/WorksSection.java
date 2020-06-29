@@ -2,11 +2,15 @@ package com.example.buildmart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,6 +28,8 @@ public class WorksSection extends AppCompatActivity implements PaytmPaymentTrans
     private RecyclerView worksList;
     private Toolbar toolbar;
     private FireStoreHandler fireStoreHandler;
+    private RelativeLayout progressBack;
+    private CardView progressLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,11 @@ public class WorksSection extends AppCompatActivity implements PaytmPaymentTrans
 
         worksList = findViewById(R.id.worksSectionList);
         toolbar = findViewById(R.id.workSectionToolbar);
+        progressBack = findViewById(R.id.progressBack);
+        progressLogo = findViewById(R.id.progressLogo);
+
+        progressLogo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_anim));
+        progressBack.setVisibility(View.VISIBLE);
 
         fireStoreHandler = new FireStoreHandler(this);
 
@@ -40,7 +51,7 @@ public class WorksSection extends AppCompatActivity implements PaytmPaymentTrans
 
         Intent currentIntent = getIntent();
 
-        fireStoreHandler.getWorks(worksList, currentIntent.getExtras().getString("sectionDoc"), this);
+        fireStoreHandler.getWorks(worksList, currentIntent.getExtras().getString("sectionDoc"), this, progressBack);
     }
 
     @Override

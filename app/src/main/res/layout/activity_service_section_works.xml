@@ -24,4 +24,6 @@
         android:layout_below="@+id/workSectionToolbar"
         android:layout_margin="10dp"/>
 
+    <include layout="@layout/progress_back" />
+
 </RelativeLayout>

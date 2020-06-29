@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/progressBack">
+    android:id="@+id/progressBack"
+    android:visibility="invisible">
 
     <View
         android:layout_width="match_parent"
@@ -13,10 +14,13 @@
         android:alpha="0.3"/>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/progressLogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:cardCornerRadius="100dp"
-        android:layout_centerInParent="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"

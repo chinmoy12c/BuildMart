@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,10 +36,12 @@ public class WorksSectionAdapter extends RecyclerView.Adapter<WorksSectionAdapte
     private WorksSectionAdapter currentAdapter;
     private WorksSection activity;
     private DocumentSnapshot calledService;
+    private RelativeLayout progressBack;
 
-    WorksSectionAdapter(Context context, QuerySnapshot queryDocumentSnapshots, WorksSection activity) {
+    WorksSectionAdapter(Context context, QuerySnapshot queryDocumentSnapshots, WorksSection activity, RelativeLayout progressBack) {
         this.context = context;
         this.activity = activity;
+        this.progressBack = progressBack;
         currentAdapter = this;
         worksList = queryDocumentSnapshots;
     }
@@ -120,6 +123,7 @@ public class WorksSectionAdapter extends RecyclerView.Adapter<WorksSectionAdapte
         TransactionManager transactionManager = new TransactionManager(paytmOrder, activity);
         transactionManager.setShowPaymentUrl(Constants.paymentUrl);
         transactionManager.startTransaction(activity, ACITIVITY_CODE);
+        progressBack.setVisibility(View.INVISIBLE);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -144,6 +148,7 @@ public class WorksSectionAdapter extends RecyclerView.Adapter<WorksSectionAdapte
             callService.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressBack.setVisibility(View.VISIBLE);
                     calledService = currentWork;
                     new FireStoreHandler(context).getServiceAdvance(position, currentAdapter);
                 }
