@@ -112,7 +112,7 @@
                 android:layout_margin="10dp"
                 android:layout_toEndOf="@+id/middleView"
                 android:background="#00cc00"
-                android:text="Add"
+                android:text="Remove"
                 android:textColor="@android:color/white"
                 android:onClick="removeItemFromCart"/>
 

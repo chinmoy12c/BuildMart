@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
 
@@ -23,12 +24,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     private ArrayList<Long> quantities;
     private String totalAmount;
     private String cartId;
+    private HashMap<String, Object> selectedMat;
+    private CardView quantitySelectorCard;
 
-    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities, TextView totalAmountText, String cartId) {
+    CartAdapter(Context context, ArrayList<MaterialObject> cartItems, ArrayList<Long> quantities,
+                TextView totalAmountText, String cartId, CardView quantitySelectorCard) {
         this.context = context;
         this.cartItems = cartItems;
         this.quantities = quantities;
+        this.quantitySelectorCard = quantitySelectorCard;
         this.cartId = cartId;
+        selectedMat = new HashMap<String, Object>();
         totalAmount = getAmount();
         totalAmountText.setText("Rs. " + totalAmount);
     }
@@ -47,6 +53,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     String getCartId() {
         return cartId;
+    }
+
+    HashMap<String, Object> getSelectedMat() {
+        return selectedMat;
     }
 
     private String getAmount() {
@@ -94,7 +104,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView itemImage;
+        private ImageView itemImage, remoteFromCartButton;
         private TextView itemName, itemQuantity, itemPriceTag;
         private CardView cartItem;
 
@@ -106,9 +116,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             itemQuantity = itemView.findViewById(R.id.cartItemQuantity);
             itemPriceTag = itemView.findViewById(R.id.cartPriceTag);
             cartItem = itemView.findViewById(R.id.cartItemCard);
+            remoteFromCartButton = itemView.findViewById(R.id.removeFromCartButton);
         }
 
-        public void bind(int position) {
+        public void bind(final int position) {
             final MaterialObject currentObject = cartItems.get(position);
 
             Picasso.get().load(currentObject.getImgPath()).into(itemImage);
@@ -121,6 +132,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     Intent detailsIntent = new Intent(context, ItemDetailsScreen.class);
                     detailsIntent.putExtra("itemData", currentObject);
                     context.startActivity(detailsIntent);
+                }
+            });
+
+            remoteFromCartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedMat.put("matId", currentObject.getMaterialId());
+                    selectedMat.put("quantity", quantities.get(position));
+                    quantitySelectorCard.setVisibility(View.VISIBLE);
                 }
             });
         }

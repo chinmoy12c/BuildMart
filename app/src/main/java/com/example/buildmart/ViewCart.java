@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,8 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     private FireStoreHandler fireStoreHandler;
     private TextView totalAmountText;
     private RelativeLayout progressBack;
-    private CardView progressLogo;
+    private CardView progressLogo, quantitySelectorCard;
+    private NumberPicker quantitySelector;
 
     private Integer ActivityRequestCode = 2;
     private String TAG = "TAG";
@@ -53,12 +55,17 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         totalAmountText = findViewById(R.id.totalAmountText);
         progressBack = findViewById(R.id.progressBack);
         progressLogo = findViewById(R.id.progressLogo);
+        quantitySelectorCard = findViewById(R.id.quantitySelectorCard);
+        quantitySelector = findViewById(R.id.itemQuantitySelector);
+
+        quantitySelector.setMaxValue(10000);
+        quantitySelector.setMinValue(1);
 
         Animation progress = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
         progressLogo.startAnimation(progress);
         progressBack.setVisibility(View.VISIBLE);
 
-        fireStoreHandler.getCart(cartRecycler, totalAmountText, progressBack);
+        fireStoreHandler.getCart(cartRecycler, totalAmountText, progressBack, quantitySelectorCard);
     }
 
     public void checkoutCart(View view) {
@@ -210,8 +217,21 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
     }
 
     public void hideSelector(View view) {
+        quantitySelectorCard.setVisibility(View.INVISIBLE);
     }
 
     public void removeItemFromCart(View view) {
+        progressBack.setVisibility(View.VISIBLE);
+        CartAdapter cartAdapter = (CartAdapter) cartRecycler.getAdapter();
+        HashMap<String, Object> selectedMat = cartAdapter.getSelectedMat();
+        quantitySelector.clearFocus();
+        long quantity = (long)selectedMat.get("quantity") - quantitySelector.getValue();
+        selectedMat.put("quantity", quantity);
+        selectedMat.put("cartId", cartAdapter.getCartId());
+
+        if (quantity <= 0)
+            fireStoreHandler.deleteItemFromCart(selectedMat, progressBack);
+        else
+            fireStoreHandler.updateMaterialInCart(selectedMat, progressBack);
     }
 }

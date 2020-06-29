@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -31,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FireStoreHandler {
 
@@ -117,7 +119,8 @@ public class FireStoreHandler {
         });
     }
 
-    public void getCart(final RecyclerView cartRecycler, final TextView totalAmountText, final RelativeLayout progressBack) {
+    public void getCart(final RecyclerView cartRecycler, final TextView totalAmountText, final RelativeLayout progressBack,
+                        final CardView quantitySelectorCard) {
         db.collection(CART_COLLECTION).whereEqualTo("userIdOwner", getUser())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -128,7 +131,7 @@ public class FireStoreHandler {
 
                 String cartId = queryDocumentSnapshots.getDocuments().get(0).getId();
 
-                getCartMaterials(matQuantities, cartRecycler, totalAmountText, cartId, progressBack);
+                getCartMaterials(matQuantities, cartRecycler, totalAmountText, cartId, progressBack, quantitySelectorCard);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -139,7 +142,8 @@ public class FireStoreHandler {
     }
 
     private void getCartMaterials(final HashMap<String, Long> matQuantities, final RecyclerView cartRecycler,
-                                  final TextView totalAmountText, final String cartId, RelativeLayout progressBack) {
+                                  final TextView totalAmountText, final String cartId,
+                                  RelativeLayout progressBack, final CardView quantitySelectorCard) {
         final ArrayList<MaterialObject> cartMaterials = new ArrayList<>();
         final ArrayList<Long> quantities = new ArrayList<>();
 
@@ -153,7 +157,8 @@ public class FireStoreHandler {
                     quantities.add(matQuantities.get(matId));
 
                     if (cartMaterials.size() == matQuantities.size()) {
-                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities, totalAmountText, cartId);
+                        CartAdapter cartAdapter = new CartAdapter(context, cartMaterials, quantities,
+                                totalAmountText, cartId, quantitySelectorCard);
                         cartRecycler.setLayoutManager(new LinearLayoutManager(context));
                         cartRecycler.setAdapter(cartAdapter);
                     }
@@ -445,6 +450,53 @@ public class FireStoreHandler {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                    }
+                });
+    }
+
+    public void updateMaterialInCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack) {
+
+        String fieldKey = "materialList." + selectedMat.get("matId");
+
+        db.collection(CART_COLLECTION).document((String) selectedMat.get("cartId"))
+                .update(
+                        fieldKey,
+                        selectedMat.get("quantity")
+                )
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progressBack.setVisibility(View.INVISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                        progressBack.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
+
+    public void deleteItemFromCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack) {
+        String fieldKey = "materialList." + selectedMat.get("matId");
+
+        Map<String,Object> updates = new HashMap<>();
+        updates.put(fieldKey, FieldValue.delete());
+
+        db.collection(CART_COLLECTION).document((String) selectedMat.get("cartId"))
+                .update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        progressBack.setVisibility(View.INVISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressBack.setVisibility(View.INVISIBLE);
                         showError(e);
                     }
                 });
