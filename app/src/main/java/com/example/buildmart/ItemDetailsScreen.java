@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
@@ -67,7 +65,7 @@ public class ItemDetailsScreen extends AppCompatActivity implements Toolbar.OnMe
         quantities = itemObject.getQuantities();
         rates = itemObject.getRates();
 
-        Picasso.get().load(itemObject.getImgPath()).into(itemImage);
+        new FireStoreHandler(this).setImageFromPath(itemObject.getImgPath(), itemImage);
         itemDescription.setText(itemObject.getDescription());
         quantity1.setText("Upto " + quantities.get(0));
         quantity2.setText("Upto " + quantities.get(1));

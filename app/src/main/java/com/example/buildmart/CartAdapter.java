@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -122,7 +120,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         public void bind(final int position) {
             final MaterialObject currentObject = cartItems.get(position);
 
-            Picasso.get().load(currentObject.getImgPath()).into(itemImage);
+            new FireStoreHandler(context).setImageFromPath(currentObject.getImgPath(), itemImage);
             itemName.setText(currentObject.getItemName());
             itemQuantity.setText(String.valueOf(quantities.get(position)));
             itemPriceTag.setText("Rs. " + currentObject.getBestPrice());

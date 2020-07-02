@@ -232,8 +232,8 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         selectedMat.put("cartId", cartAdapter.getCartId());
 
         if (quantity <= 0)
-            fireStoreHandler.deleteItemFromCart(selectedMat, progressBack);
+            fireStoreHandler.deleteItemFromCart(selectedMat, progressBack, this);
         else
-            fireStoreHandler.updateMaterialInCart(selectedMat, progressBack);
+            fireStoreHandler.updateMaterialInCart(selectedMat, progressBack, this);
     }
 }

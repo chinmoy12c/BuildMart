@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -69,7 +68,6 @@ public class FireStoreHandler {
 
     public void setImageFromPath(String imgName, final ImageView imageView) {
 
-        Log.d("imagePath", imageRef.getPath());
         imageRef.child(imgName + ".png").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -457,7 +455,7 @@ public class FireStoreHandler {
                 });
     }
 
-    public void updateMaterialInCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack) {
+    public void updateMaterialInCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack, final Activity activity) {
 
         String fieldKey = "materialList." + selectedMat.get("matId");
 
@@ -470,6 +468,8 @@ public class FireStoreHandler {
                     @Override
                     public void onSuccess(Void aVoid) {
                         progressBack.setVisibility(View.INVISIBLE);
+                        activity.finish();
+                        activity.startActivity(activity.getIntent());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -481,7 +481,7 @@ public class FireStoreHandler {
                 });
     }
 
-    public void deleteItemFromCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack) {
+    public void deleteItemFromCart(HashMap<String, Object> selectedMat, final RelativeLayout progressBack, final Activity activity) {
         String fieldKey = "materialList." + selectedMat.get("matId");
 
         Map<String,Object> updates = new HashMap<>();
@@ -493,6 +493,8 @@ public class FireStoreHandler {
                     @Override
                     public void onSuccess(Void aVoid) {
                         progressBack.setVisibility(View.INVISIBLE);
+                        activity.finish();
+                        activity.startActivity(activity.getIntent());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

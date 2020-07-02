@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
 
 public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapter.MyViewHolder> {
 
@@ -69,7 +68,7 @@ public class MaterialListAdapter extends RecyclerView.Adapter<MaterialListAdapte
             final DocumentSnapshot itemData = materials.getDocuments().get(position);
             final MaterialObject itemObject = new MaterialObject(itemData);
 
-            Picasso.get().load(itemObject.getImgPath()).into(itemImage);
+            new FireStoreHandler(context).setImageFromPath(itemObject.getImgPath(), itemImage);
             itemName.setText(itemObject.getItemName());
             itemPrice.setText("Rs."+itemObject.getBestPrice());
             singleMaterialObject.setOnClickListener(new View.OnClickListener() {
