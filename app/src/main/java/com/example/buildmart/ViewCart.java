@@ -96,6 +96,7 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
                     startPayment(String.valueOf(body.get("txnToken")), orderId, amount);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    showToast("Something went wrong! PLease try again.");
                     progressBack.setVisibility(View.INVISIBLE);
                 }
             }
@@ -104,6 +105,7 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 progressBack.setVisibility(View.INVISIBLE);
+                showToast("Something went wrong! PLease try again.");
             }
         });
 

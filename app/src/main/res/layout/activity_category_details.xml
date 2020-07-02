@@ -26,4 +26,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/categoryToolbar"/>
 
+    <include layout="@layout/progress_back"/>
+
 </RelativeLayout>

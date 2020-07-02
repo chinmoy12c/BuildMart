@@ -90,16 +90,17 @@ public class WorksSectionAdapter extends RecyclerView.Adapter<WorksSectionAdapte
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject body = (JSONObject) response.get("body");
-                    System.out.println(body);
                     startPayment(String.valueOf(body.get("txnToken")), orderId, amount);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressBack.setVisibility(View.INVISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                progressBack.setVisibility(View.INVISIBLE);
             }
         });
 

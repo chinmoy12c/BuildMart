@@ -85,7 +85,7 @@ public class FireStoreHandler {
                 });
     }
 
-    void getCategoryMaterials(String category, final RecyclerView materialList) {
+    void getCategoryMaterials(String category, final RecyclerView materialList, final RelativeLayout progressBack) {
         db.collection(MATERIAL_COLLECTION).whereEqualTo("category", category)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -93,11 +93,13 @@ public class FireStoreHandler {
                 MaterialListAdapter categoryMaterialListAdapter = new MaterialListAdapter(context, queryDocumentSnapshots);
                 materialList.setAdapter(categoryMaterialListAdapter);
                 materialList.setLayoutManager(new LinearLayoutManager(context));
+                progressBack.setVisibility(View.INVISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 showError(e);
+                progressBack.setVisibility(View.INVISIBLE);
             }
         });
     }
