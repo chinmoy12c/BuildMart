@@ -91,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.postRequirement:
                 startActivity(new Intent(this, PostRequirementScreen.class));
                 break;
+
+            case R.id.showOrders:
+                startActivity(new Intent(this, ViewOrders.class));
+                break;
         }
         return false;
     }

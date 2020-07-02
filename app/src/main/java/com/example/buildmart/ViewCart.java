@@ -213,7 +213,8 @@ public class ViewCart extends AppCompatActivity implements PaytmPaymentTransacti
         orderData.put("username", fireStoreHandler.getUser());
         orderData.put("orderTimestamp", new Date());
         orderData.put("cartId", cartAdapter.getCartId());
-        orderData.put("totalAmount", getAmount());
+        orderData.put("totalAmount", Long.valueOf(getAmount()));
+        orderData.put("status", "pending");
 
         return orderData;
     }

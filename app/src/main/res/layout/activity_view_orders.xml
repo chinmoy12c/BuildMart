@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewOrders">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/myOrdersToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/myOrdersToolbar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myOrdersRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myOrdersToolbar"
+        android:layout_margin="10dp"/>
+
+    <include layout="@layout/progress_back"/>
+</RelativeLayout>

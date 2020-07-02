@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/singleMaterialObject"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/materialObjectPic"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/materialObjectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/materialObjectPic"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/saira_bold"/>
+
+        <TextView
+            android:id="@+id/multText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/materialObjectName"
+            android:layout_margin="20dp"
+            android:text="X"
+            android:textSize="16sp"
+            android:fontFamily="@font/saira_semi_bold"/>
+
+        <TextView
+            android:id="@+id/itemQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/multText"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/saira_bold"/>
+
+        <TextView
+            android:id="@+id/materialObjectRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/materialObjectPic"
+            android:layout_below="@+id/materialObjectName"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

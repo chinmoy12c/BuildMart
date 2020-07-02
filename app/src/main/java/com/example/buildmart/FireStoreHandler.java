@@ -505,4 +505,58 @@ public class FireStoreHandler {
                     }
                 });
     }
+
+    public void getMyOrders(final RecyclerView ordersView, final RelativeLayout progressBack) {
+        db.collection(SHOP_ORDERS).whereEqualTo("username", getUser())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        MyOrdersAdapter myOrdersAdapter = new MyOrdersAdapter(context, queryDocumentSnapshots);
+                        ordersView.setLayoutManager(new LinearLayoutManager(context));
+                        ordersView.setAdapter(myOrdersAdapter);
+                        progressBack.setVisibility(View.INVISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showError(e);
+                        progressBack.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
+
+    public void getOrderItems(final RecyclerView materialList, OrderObject orderObject, final RelativeLayout progressBack) {
+        final HashMap<String, Long> materials = orderObject.getMaterialList();
+        final ArrayList<MaterialObject> orderItems = new ArrayList<>();
+        final ArrayList<Long> quantities = new ArrayList<>();
+
+        for (final String matId : materials.keySet()) {
+            db.collection(MATERIAL_COLLECTION).whereEqualTo("matId", matId)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            DocumentSnapshot material = queryDocumentSnapshots.getDocuments().get(0);
+                            orderItems.add(new MaterialObject(material));
+                            quantities.add(materials.get(matId));
+
+                            if (orderItems.size() == materials.size()) {
+                                SingleOrderAdapter singleOrderAdapter = new SingleOrderAdapter(context, orderItems, quantities);
+                                materialList.setAdapter(singleOrderAdapter);
+                                materialList.setLayoutManager(new LinearLayoutManager(context));
+                                progressBack.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            showError(e);
+                            progressBack.setVisibility(View.INVISIBLE);
+                        }
+                    });
+        }
+    }
 }
